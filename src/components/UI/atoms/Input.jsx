@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { cn } from '../../../lib/utils'
 
-const Input = forwardRef(({
+const Input = forwardRef(({ 
   label,
   error,
   helperText,
@@ -10,6 +10,7 @@ const Input = forwardRef(({
   size = 'md',
   variant = 'bordered',
   className = '',
+  suffix,
   ...props
 }, ref) => {
   const baseClasses = 'input'
@@ -38,7 +39,8 @@ const Input = forwardRef(({
     variantClasses[error ? 'error' : variant],
     sizeClasses[size],
     fullWidth && 'w-full',
-    className
+    className,
+    suffix && 'pr-10'
   )
 
   return (
@@ -51,11 +53,18 @@ const Input = forwardRef(({
           </span>
         </label>
       )}
-      <input
-        ref={ref}
-        className={inputClasses}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          ref={ref}
+          className={inputClasses}
+          {...props}
+        />
+        {suffix && (
+          <div className="absolute inset-y-0 right-3 flex items-center">
+            {suffix}
+          </div>
+        )}
+      </div>
       {(error || helperText) && (
         <label className="label">
           <span className={cn(

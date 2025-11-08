@@ -2,12 +2,13 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import toast from 'react-hot-toast'
 import { Button, Input, Card } from '../components/UI/atoms'
 import { useAuthStore } from '../stores/authStore'
 import { useAuth } from '../hooks/useApi'
-import { Box } from 'lucide-react'
+import orangeLogo from '../assets/orange.png'
+import { Eye, EyeOff } from 'lucide-react'
 
 const schema = yup.object({
   email: yup
@@ -25,6 +26,7 @@ const Login = () => {
   const { login: loginToStore } = useAuthStore()
   const { login } = useAuth()
   const isSubmittingRef = useRef(false)
+  const [showPassword, setShowPassword] = useState(false)
   
   const {
     register,
@@ -89,9 +91,7 @@ const Login = () => {
       <Card className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-6">
-          <div className="p-4 bg-primary rounded-full shadow-lg">
-            <Box className="w-6 h-6 text-white" />
-          </div>
+          <img src={orangeLogo} alt="BlackBoxZ Logo" className="h-12" />
         </div>
         
         <h1 className="text-3xl font-bold text-center text-primary mb-2">BlackBoxZ</h1>
@@ -107,10 +107,24 @@ const Login = () => {
           />
           
           <Input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             label="Password"
             placeholder="Masukkan password"
             error={errors.password?.message}
+            suffix={
+              <button
+                type="button"
+                className="btn btn-ghost btn-xs"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            }
             {...register('password')}
           />
           
